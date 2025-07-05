@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: "Noto Sans JP";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(../fonts/Noto_Sans_JP/NotoSansJP-VariableFont_wght.ttf)
+        format("woff2");
+}
+
+body {
+    user-select: none;
+}

@@ -52,7 +52,7 @@ const handleStart = () => {
 
     setCurrentTime();
     clockInterval = window.setInterval(setCurrentTime, 100);
-    chimeInterval = window.setInterval(playChime, 1000);
+    chimeInterval = window.setInterval(playChime, 100);
 };
 
 onUnmounted(() => {
@@ -70,10 +70,12 @@ onUnmounted(() => {
             v-if="!isStarted"
             class="text-center text-white p-5"
         >
-            <h1 class="text-2xl md:text-7xl font-bold mb-6 animate-pulse">
-                クリックして開始
+            <h1 class="text-2xl md:text-5xl font-bold mb-6 animate-pulse">
+                画面をクリック・タップしてください
             </h1>
-            <p class="text-xl md:text-3xl">時刻表示とチャイムを開始します</p>
+            <p class="text-xl md:text-3xl">
+                時刻表示とチャイム再生を開始します
+            </p>
         </div>
 
         <div

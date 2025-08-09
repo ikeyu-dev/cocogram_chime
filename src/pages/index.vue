@@ -24,7 +24,7 @@ const playChime = () => {
     const seconds = now.getSeconds();
 
     if (
-        (minutes === 10 || minutes === 45) &&
+        (minutes === 10 || minutes === 45 || minutes === 50 || minutes === 0) &&
         hours >= 10 &&
         hours <= 16 &&
         seconds === 0
@@ -39,7 +39,7 @@ const handleStart = () => {
     if (isStarted.value) return;
 
     audio = new Audio(resultSound);
-    audio.volume = 0;
+    audio.volume = 1;
 
     const playPromise = audio.play();
     if (playPromise !== undefined) {
@@ -63,7 +63,7 @@ onUnmounted(() => {
 
 <template>
     <div
-        class="flex items-center justify-center min-h-screen bg-blue-500 cursor-pointer"
+        class="flex items-center justify-center min-h-screen bg-yellow-300 cursor-pointer"
         @click="handleStart"
     >
         <div
@@ -91,7 +91,7 @@ onUnmounted(() => {
                 {{ currentTime }}
             </p>
             <p class="text-base md:text-lg text-gray-500 mt-6 animate-pulse">
-                毎時10分と45分にチャイムが鳴ります
+                毎時0/10/45/50分にチャイムが鳴ります
             </p>
         </div>
     </div>

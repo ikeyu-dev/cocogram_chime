@@ -90,7 +90,7 @@ onUnmounted(() => {
             >
                 {{ currentTime }}
             </p>
-            <p class="text-base md:text-lg text-gray-500 mt-6 animate-pulse">
+            <p class="text-base md:text-4xl text-gray-500 mt-6 animate-pulse">
                 毎時0/10/45/50分にチャイムが鳴ります
             </p>
         </div>

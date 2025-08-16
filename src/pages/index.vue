@@ -86,7 +86,7 @@ onUnmounted(() => {
                 現在の時刻
             </p>
             <p
-                class="text-4xl md:text-8xl font-extrabold text-gray-900 tracking-wide"
+                class="text-4xl md:text-9xl font-extrabold text-gray-900 tracking-wide mb-12"
             >
                 {{ currentTime }}
             </p>

@@ -82,7 +82,7 @@ onUnmounted(() => {
             v-else
             class="bg-white shadow-2xl rounded-2xl p-12 text-center"
         >
-            <p class="text-2xl md:text-4xl font-semibold text-gray-800 mb-8">
+            <p class="text-2xl md:text-7xl font-semibold text-gray-800 mb-12">
                 現在の時刻
             </p>
             <p

@@ -113,7 +113,22 @@ const handleStart = () => {
     chimeInterval = window.setInterval(playChime, 100);
 };
 
+const md_show = ref<boolean>(true);
+const windowWidth = ref<number>(0);
+
+const updateVisibility = () => {
+    md_show.value = window.innerWidth >= 768;
+    windowWidth.value = window.innerWidth;
+};
+
+onMounted(async () => {
+    window.addEventListener("resize", updateVisibility);
+    updateVisibility();
+});
+
 onUnmounted(() => {
+    window.removeEventListener("resize", updateVisibility);
+    updateVisibility();
     clearInterval(clockInterval);
     clearInterval(chimeInterval);
 });

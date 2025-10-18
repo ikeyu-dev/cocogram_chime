@@ -159,7 +159,7 @@ onUnmounted(() => {
                 <p
                     class="text-2xl md:text-7xl font-semibold text-gray-800 mb-12"
                 >
-                    現在の時刻
+                    じかん
                 </p>
                 <p
                     class="text-4xl md:text-9xl font-extrabold text-gray-900 tracking-wide mb-12"

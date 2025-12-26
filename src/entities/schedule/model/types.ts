@@ -1,4 +1,4 @@
 export type Schedule = {
-  minute: string;
-  do: string;
+    minute: string;
+    do: string;
 };

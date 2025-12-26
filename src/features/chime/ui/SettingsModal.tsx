@@ -49,32 +49,34 @@ export const SettingsModal = ({
 
     return (
         <div
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             onClick={onClose}
         >
             <div
-                className="bg-base-100 rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto"
+                className="bg-white rounded-3xl p-8 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="text-2xl font-bold mb-6">チャイム設定</h2>
+                <h2 className="text-2xl font-bold mb-8 text-gray-800">
+                    チャイム設定
+                </h2>
 
-                <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-3">
+                <div className="mb-8">
+                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-4">
                         チャイムを鳴らす分
                     </h3>
                     <div className="flex flex-wrap gap-2 mb-4">
                         {settings.minutes.map((minute) => (
                             <button
                                 key={minute}
-                                className="btn btn-sm btn-primary"
+                                className="px-4 py-2 bg-amber-100 text-amber-800 rounded-xl text-sm font-medium hover:bg-amber-200 transition-colors flex items-center gap-1"
                                 onClick={() => onRemoveMinute(minute)}
                             >
                                 {minute}分
-                                <span className="ml-1">×</span>
+                                <span className="text-amber-600">×</span>
                             </button>
                         ))}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                         <input
                             type="number"
                             min="0"
@@ -83,10 +85,10 @@ export const SettingsModal = ({
                             onChange={(e) => setNewMinute(e.target.value)}
                             onKeyDown={handleKeyDown}
                             placeholder="0-59"
-                            className="input input-bordered w-24"
+                            className="w-24 px-4 py-2 border border-gray-200 rounded-xl text-center focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all"
                         />
                         <button
-                            className="btn btn-secondary"
+                            className="px-6 py-2 bg-gray-900 text-white rounded-xl font-medium hover:bg-gray-800 active:scale-95 transition-all"
                             onClick={handleAddMinute}
                         >
                             追加
@@ -94,17 +96,17 @@ export const SettingsModal = ({
                     </div>
                 </div>
 
-                <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-3">
+                <div className="mb-8">
+                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-4">
                         チャイムを鳴らす時間帯
                     </h3>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
                         <select
                             value={settings.startHour}
                             onChange={(e) =>
                                 onSetStartHour(parseInt(e.target.value, 10))
                             }
-                            className="select select-bordered w-24"
+                            className="px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all appearance-none bg-white cursor-pointer"
                         >
                             {Array.from({ length: 24 }, (_, i) => (
                                 <option
@@ -115,13 +117,13 @@ export const SettingsModal = ({
                                 </option>
                             ))}
                         </select>
-                        <span>〜</span>
+                        <span className="text-gray-400">→</span>
                         <select
                             value={settings.endHour}
                             onChange={(e) =>
                                 onSetEndHour(parseInt(e.target.value, 10))
                             }
-                            className="select select-bordered w-24"
+                            className="px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all appearance-none bg-white cursor-pointer"
                         >
                             {Array.from({ length: 24 }, (_, i) => (
                                 <option
@@ -135,15 +137,15 @@ export const SettingsModal = ({
                     </div>
                 </div>
 
-                <div className="flex gap-2 justify-end">
+                <div className="flex gap-3 justify-end pt-4 border-t border-gray-100">
                     <button
-                        className="btn btn-ghost"
+                        className="px-5 py-2.5 text-gray-600 rounded-xl font-medium hover:bg-gray-100 transition-colors"
                         onClick={onReset}
                     >
                         初期値に戻す
                     </button>
                     <button
-                        className="btn btn-primary"
+                        className="px-6 py-2.5 bg-amber-500 text-white rounded-xl font-medium hover:bg-amber-600 active:scale-95 transition-all shadow-lg shadow-amber-500/25"
                         onClick={onClose}
                     >
                         閉じる

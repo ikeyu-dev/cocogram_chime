@@ -18,26 +18,26 @@ export const TaskDisplay = ({
     return (
         <div className="flex flex-col items-center w-full">
             <p
-                className="font-bold text-secondary mb-2"
+                className="font-bold bg-linear-to-r from-orange-500 to-red-500 bg-clip-text text-transparent mb-2"
                 style={{ fontSize: `${labelFontSize}px` }}
             >
                 いまやること
             </p>
             <p
-                className="font-black text-base-content mb-4 leading-none"
+                className="font-black text-base-content mb-4 leading-none drop-shadow-sm"
                 style={{ fontSize: `${taskFontSize}px` }}
             >
                 {currentTask}
             </p>
-            <div className="flex items-center gap-3 bg-warning/20 rounded-full px-6 py-2">
+            <div className="flex items-center gap-3 bg-linear-to-r from-amber-100 to-orange-100 rounded-full px-6 py-2 shadow-sm">
                 <span
-                    className="font-bold text-warning-content"
+                    className="font-bold text-amber-700"
                     style={{ fontSize: `${remainingFontSize * 0.7}px` }}
                 >
                     のこり
                 </span>
                 <span
-                    className="font-black text-warning-content"
+                    className="font-black text-amber-800"
                     style={{ fontSize: `${remainingFontSize}px` }}
                 >
                     {timeToNextTask}

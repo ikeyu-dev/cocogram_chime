@@ -41,17 +41,17 @@ export const TimerDashboard = () => {
 
     return (
         <div
-            className="h-screen flex items-center justify-center p-4 cursor-pointer overflow-hidden relative"
+            className="h-screen flex items-center justify-center p-4 cursor-pointer overflow-hidden relative bg-linear-to-br from-amber-50 via-white to-yellow-50"
             onClick={handleStart}
         >
             <button
-                className="btn btn-ghost btn-circle btn-lg absolute top-4 right-4 z-10"
+                className="btn btn-ghost btn-circle btn-lg absolute top-4 right-4 z-10 hover:bg-base-300/50 transition-all duration-300"
                 onClick={handleSettingsClick}
                 aria-label="設定"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-10 w-10"
+                    className="h-10 w-10 text-base-content/60 hover:text-primary transition-colors"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -73,21 +73,21 @@ export const TimerDashboard = () => {
 
             {!isStarted ? (
                 <div className="text-center">
-                    <h1 className="text-2xl md:text-5xl font-bold mb-6 text-primary animate-pulse">
+                    <h1 className="text-2xl md:text-5xl font-bold mb-6 bg-linear-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent animate-pulse">
                         画面をクリック・タップしてください
                     </h1>
-                    <p className="text-xl md:text-3xl text-base-content/70">
+                    <p className="text-xl md:text-3xl text-base-content/60">
                         時刻表示とチャイム再生を開始します
                     </p>
                 </div>
             ) : (
-                <div className="w-full flex flex-col items-center justify-center gap-4">
+                <div className="w-full flex flex-col items-center justify-center gap-6">
                     <ClockDisplay
                         currentTime={currentTime}
                         fontSize={clockFontSize}
                         labelFontSize={labelFontSize}
                     />
-                    <hr className="w-full border-base-300 border-t-2" />
+                    <div className="w-full h-px bg-linear-to-r from-transparent via-base-300 to-transparent" />
                     <TaskDisplay
                         currentTask={currentTask}
                         timeToNextTask={timeToNextTask}

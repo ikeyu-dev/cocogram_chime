@@ -1,6 +1,52 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-    themes: light --default, dark --prefersdark;
+    themes: cocogram --default;
+}
+
+@theme {
+    --color-cocogram-primary: #eab308;
+    --color-cocogram-primary-content: #422006;
+    --color-cocogram-secondary: #f97316;
+    --color-cocogram-secondary-content: #431407;
+    --color-cocogram-accent: #84cc16;
+    --color-cocogram-accent-content: #1a2e05;
+    --color-cocogram-neutral: #292524;
+    --color-cocogram-neutral-content: #fafaf9;
+    --color-cocogram-base-100: #ffffff;
+    --color-cocogram-base-200: #fefce8;
+    --color-cocogram-base-300: #fef08a;
+    --color-cocogram-base-content: #1c1917;
+    --color-cocogram-info: #0ea5e9;
+    --color-cocogram-info-content: #ffffff;
+    --color-cocogram-success: #22c55e;
+    --color-cocogram-success-content: #ffffff;
+    --color-cocogram-warning: #f59e0b;
+    --color-cocogram-warning-content: #451a03;
+    --color-cocogram-error: #ef4444;
+    --color-cocogram-error-content: #ffffff;
+}
+
+[data-theme="cocogram"] {
+    --color-primary: var(--color-cocogram-primary);
+    --color-primary-content: var(--color-cocogram-primary-content);
+    --color-secondary: var(--color-cocogram-secondary);
+    --color-secondary-content: var(--color-cocogram-secondary-content);
+    --color-accent: var(--color-cocogram-accent);
+    --color-accent-content: var(--color-cocogram-accent-content);
+    --color-neutral: var(--color-cocogram-neutral);
+    --color-neutral-content: var(--color-cocogram-neutral-content);
+    --color-base-100: var(--color-cocogram-base-100);
+    --color-base-200: var(--color-cocogram-base-200);
+    --color-base-300: var(--color-cocogram-base-300);
+    --color-base-content: var(--color-cocogram-base-content);
+    --color-info: var(--color-cocogram-info);
+    --color-info-content: var(--color-cocogram-info-content);
+    --color-success: var(--color-cocogram-success);
+    --color-success-content: var(--color-cocogram-success-content);
+    --color-warning: var(--color-cocogram-warning);
+    --color-warning-content: var(--color-cocogram-warning-content);
+    --color-error: var(--color-cocogram-error);
+    --color-error-content: var(--color-cocogram-error-content);
 }
 
 body {

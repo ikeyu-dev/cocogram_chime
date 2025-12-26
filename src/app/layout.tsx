@@ -14,7 +14,7 @@ export default function RootLayout({
     return (
         <html
             lang="ja"
-            data-theme="light"
+            data-theme="cocogram"
         >
             <body className="min-h-screen bg-base-200">{children}</body>
         </html>

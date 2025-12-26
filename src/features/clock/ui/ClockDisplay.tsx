@@ -14,13 +14,13 @@ export const ClockDisplay = ({
     return (
         <div className="flex flex-col items-center">
             <p
-                className="font-bold text-primary mb-2"
+                className="font-bold bg-linear-to-r from-yellow-500 to-amber-500 bg-clip-text text-transparent mb-2"
                 style={{ fontSize: `${labelFontSize}px` }}
             >
                 いまのじかん
             </p>
             <p
-                className="font-black text-base-content tabular-nums leading-none"
+                className="font-black text-base-content tabular-nums leading-none drop-shadow-sm"
                 style={{ fontSize: `${fontSize}px` }}
             >
                 {currentTime}

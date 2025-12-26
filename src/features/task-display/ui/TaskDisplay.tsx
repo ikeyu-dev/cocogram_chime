@@ -18,7 +18,7 @@ export const TaskDisplay = ({
     return (
         <div className="flex flex-col items-center w-full">
             <p
-                className="font-bold bg-linear-to-r from-orange-500 to-red-500 bg-clip-text text-transparent mb-2"
+                className="font-bold bg-linear-to-r from-orange-500 to-red-500 bg-clip-text text-transparent mb-4"
                 style={{ fontSize: `${labelFontSize}px` }}
             >
                 いまやること

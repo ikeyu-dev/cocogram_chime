@@ -42,11 +42,11 @@ export const useChimeSettings = () => {
             if (minute < 0 || minute > 59) return;
             if (settings.minutes.includes(minute)) return;
             const newMinutes = [...settings.minutes, minute].sort(
-                (a, b) => a - b,
+                (a, b) => a - b
             );
             saveSettings({ ...settings, minutes: newMinutes });
         },
-        [settings, saveSettings],
+        [settings, saveSettings]
     );
 
     const removeMinute = useCallback(
@@ -54,7 +54,7 @@ export const useChimeSettings = () => {
             const newMinutes = settings.minutes.filter((m) => m !== minute);
             saveSettings({ ...settings, minutes: newMinutes });
         },
-        [settings, saveSettings],
+        [settings, saveSettings]
     );
 
     const setStartHour = useCallback(
@@ -62,7 +62,7 @@ export const useChimeSettings = () => {
             if (hour < 0 || hour > 23) return;
             saveSettings({ ...settings, startHour: hour });
         },
-        [settings, saveSettings],
+        [settings, saveSettings]
     );
 
     const setEndHour = useCallback(
@@ -70,7 +70,7 @@ export const useChimeSettings = () => {
             if (hour < 0 || hour > 23) return;
             saveSettings({ ...settings, endHour: hour });
         },
-        [settings, saveSettings],
+        [settings, saveSettings]
     );
 
     const resetToDefault = useCallback(() => {

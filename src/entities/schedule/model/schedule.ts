@@ -24,7 +24,7 @@ export const getTimeToNextTask = (currentMinute: number): string => {
     const nextIndex =
         currentIndex === minuteSchedule.length - 1 ? 0 : currentIndex + 1;
     const nextStartMinute = Number(
-        minuteSchedule[nextIndex].minute.split("-")[0],
+        minuteSchedule[nextIndex].minute.split("-")[0]
     );
 
     let minutesToNextTask = nextStartMinute - currentMinute;

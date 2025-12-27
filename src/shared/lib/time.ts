@@ -1,7 +1,7 @@
 export const formatTime = (
     hours: number,
     minutes: number,
-    showColon: boolean,
+    showColon: boolean
 ): string => {
     const h = String(hours).padStart(2, "0");
     const m = String(minutes).padStart(2, "0");

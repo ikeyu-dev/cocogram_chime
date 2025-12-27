@@ -15,8 +15,8 @@ export const useClock = () => {
                 formatTime(
                     now.getHours(),
                     now.getMinutes(),
-                    showColonRef.current,
-                ),
+                    showColonRef.current
+                )
             );
         };
 

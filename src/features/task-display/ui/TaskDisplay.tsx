@@ -24,7 +24,7 @@ export const TaskDisplay = ({
                 いまやること
             </p>
             <p
-                className="font-black text-base-content mb-4 leading-none drop-shadow-sm"
+                className="font-black text-base-content mb-6 leading-none drop-shadow-sm"
                 style={{ fontSize: `${taskFontSize}px` }}
             >
                 {currentTask}

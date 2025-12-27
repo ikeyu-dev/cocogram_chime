@@ -1,11 +1,10 @@
 import type { Schedule } from "./types";
 
 export const minuteSchedule: Schedule[] = [
-    { minute: "00-09", do: "タイピング" },
-    { minute: "10-44", do: "プログラミング" },
+    { minute: "00-24", do: "タイピング" },
+    { minute: "25-44", do: "プログラミング" },
     { minute: "45-49", do: "かたづけ" },
-    { minute: "50-50", do: "あいさつ" },
-    { minute: "51-59", do: "授業準備" },
+    { minute: "50-59", do: "授業準備" },
 ];
 
 export const getCurrentTask = (currentMinute: number): string => {

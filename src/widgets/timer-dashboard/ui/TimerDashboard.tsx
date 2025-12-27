@@ -10,7 +10,8 @@ export const TimerDashboard = () => {
     const [isStarted, setIsStarted] = useState(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const { currentTime } = useClock();
-    const { currentTask, timeToNextTask } = useTask(currentTime);
+    const { currentTask, timeToNextTask, currentMinute, schedule } =
+        useTask(currentTime);
     const { width, height } = useWindowSize();
     const {
         settings,
@@ -91,6 +92,8 @@ export const TimerDashboard = () => {
                     <TaskDisplay
                         currentTask={currentTask}
                         timeToNextTask={timeToNextTask}
+                        currentMinute={currentMinute}
+                        schedule={schedule}
                         taskFontSize={taskFontSize}
                         remainingFontSize={remainingFontSize}
                         labelFontSize={labelFontSize}

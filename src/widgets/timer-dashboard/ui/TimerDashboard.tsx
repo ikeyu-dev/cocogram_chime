@@ -34,8 +34,8 @@ export const TimerDashboard = () => {
     };
 
     // 画面サイズに基づいてフォントサイズを計算
-    // 時計: 画面高さの20%、タスク: 画面高さの12%、残り時間: 画面高さの6%
-    const clockFontSize = Math.min(width * 0.25, height * 0.2);
+    // 時計を小さく、スケジュールを大きく
+    const clockFontSize = Math.min(width * 0.15, height * 0.12);
     const taskFontSize = Math.min(width * 0.18, height * 0.12);
     const remainingFontSize = Math.min(width * 0.08, height * 0.06);
     const labelFontSize = Math.min(width * 0.05, height * 0.04);

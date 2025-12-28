@@ -11,3 +11,7 @@ export const formatTime = (
 export const getCurrentMinute = (timeString: string): number => {
     return Number(timeString.split(":")[1] || timeString.split(" ")[1]);
 };
+
+export const getCurrentHour = (timeString: string): number => {
+    return Number(timeString.split(":")[0] || timeString.split(" ")[0]);
+};

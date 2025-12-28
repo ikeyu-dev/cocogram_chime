@@ -6,10 +6,20 @@ type TaskDisplayProps = {
     currentTask: string;
     timeToNextTask: string;
     currentMinute: number;
+    currentHour: number;
     schedule: Schedule[];
     taskFontSize: number;
     remainingFontSize: number;
     labelFontSize: number;
+};
+
+/**
+ * 時刻を HH:MM 形式でフォーマットする
+ */
+const formatTimeDisplay = (hour: number, minute: string): string => {
+    const h = String(hour).padStart(2, "0");
+    const m = minute.padStart(2, "0");
+    return `${h}:${m}`;
 };
 
 /**
@@ -42,6 +52,7 @@ const getOpacity = (
 
 export const TaskDisplay = ({
     currentMinute,
+    currentHour,
     schedule,
     labelFontSize,
 }: TaskDisplayProps) => {
@@ -101,7 +112,10 @@ export const TaskDisplay = ({
                                         ${isCurrent ? "text-amber-700 font-bold" : "text-gray-400"}
                                     `}
                                 >
-                                    :{item.minute.split("-")[0]}
+                                    {formatTimeDisplay(
+                                        currentHour,
+                                        item.minute.split("-")[0]
+                                    )}
                                 </span>
                             </div>
 
@@ -125,7 +139,11 @@ export const TaskDisplay = ({
                                         ${isCurrent ? "text-amber-600" : "text-gray-300"}
                                     `}
                                 >
-                                    ~ :{item.minute.split("-")[1]}
+                                    ~{" "}
+                                    {formatTimeDisplay(
+                                        currentHour,
+                                        item.minute.split("-")[1]
+                                    )}
                                 </span>
                             </div>
                         </div>

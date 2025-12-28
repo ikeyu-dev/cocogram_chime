@@ -9,9 +9,11 @@ export const formatTime = (
 };
 
 export const getCurrentMinute = (timeString: string): number => {
-    return Number(timeString.split(":")[1] || timeString.split(" ")[1]);
+    const separator = timeString.includes(":") ? ":" : " ";
+    return Number(timeString.split(separator)[1]);
 };
 
 export const getCurrentHour = (timeString: string): number => {
-    return Number(timeString.split(":")[0] || timeString.split(" ")[0]);
+    const separator = timeString.includes(":") ? ":" : " ";
+    return Number(timeString.split(separator)[0]);
 };

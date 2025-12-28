@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "@shared/ui/styles/globals.css";
 
 export const metadata: Metadata = {
-    title: "Cocogram",
+    title: "chime app",
     description: "時刻表示とタスク管理アプリ",
 };
 

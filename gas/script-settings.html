@@ -1,0 +1,59 @@
+<script>
+var STORAGE_KEY = "cocogram-chime-settings";
+var DEFAULT_SETTINGS = {
+    minutes: [0, 10, 45, 50],
+    startHour: 10,
+    endHour: 16
+};
+
+var settings = JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
+
+function loadSettings() {
+    try {
+        var stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            settings = JSON.parse(stored);
+        }
+    } catch (e) {
+        settings = JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
+    }
+}
+
+function saveSettings() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+}
+
+function addMinute(minute) {
+    if (minute < 0 || minute > 59) return;
+    if (settings.minutes.indexOf(minute) !== -1) return;
+    settings.minutes.push(minute);
+    settings.minutes.sort(function(a, b) { return a - b; });
+    saveSettings();
+    renderMinuteTags();
+}
+
+function removeMinute(minute) {
+    settings.minutes = settings.minutes.filter(function(m) { return m !== minute; });
+    saveSettings();
+    renderMinuteTags();
+}
+
+function setStartHour(hour) {
+    if (hour < 0 || hour > 23) return;
+    settings.startHour = hour;
+    saveSettings();
+}
+
+function setEndHour(hour) {
+    if (hour < 0 || hour > 23) return;
+    settings.endHour = hour;
+    saveSettings();
+}
+
+function resetToDefault() {
+    settings = JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
+    saveSettings();
+    renderMinuteTags();
+    renderHourSelects();
+}
+</script>

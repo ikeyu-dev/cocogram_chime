@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chime app</title>
+    <?!= include('styles') ?>
+</head>
+<body>
+    <div id="app" onclick="handleAppClick(event)">
+        <button class="settings-btn" onclick="handleSettingsClick(event)" aria-label="設定">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+        </button>
+
+        <div id="startMessage" class="start-message">
+            <h1>画面をクリック・タップしてください</h1>
+            <p>時刻表示とチャイム再生を開始します</p>
+        </div>
+
+        <div id="mainContent" class="main-content">
+            <div class="clock-display">
+                <p id="clockTime" class="clock-time">00:00</p>
+            </div>
+            <div class="divider"></div>
+            <div class="schedule-section">
+                <p id="scheduleTitle" class="schedule-title">スケジュール</p>
+                <div id="scheduleList" class="schedule-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalOverlay" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 class="modal-title">チャイム設定</h2>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">チャイムを鳴らす分</h3>
+                <div id="minuteTags" class="minute-tags"></div>
+                <div class="input-row">
+                    <input id="minuteInput" type="number" min="0" max="59" placeholder="0-59" class="minute-input"
+                        onkeydown="handleMinuteKeyDown(event)">
+                    <button class="btn-add" onclick="handleAddMinute()">追加</button>
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">チャイムを鳴らす時間帯</h3>
+                <div class="hour-row">
+                    <select id="startHourSelect" class="hour-select" onchange="handleStartHourChange(event)"></select>
+                    <span class="hour-arrow">&rarr;</span>
+                    <select id="endHourSelect" class="hour-select" onchange="handleEndHourChange(event)"></select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-reset" onclick="handleReset()">初期値に戻す</button>
+                <button class="btn-close" onclick="closeModalDirect()">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <?!= include('script-data') ?>
+    <?!= include('script-settings') ?>
+    <?!= include('script-chime') ?>
+    <?!= include('script-ui') ?>
+</body>
+</html>

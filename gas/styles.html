@@ -87,6 +87,36 @@
         color: var(--color-primary);
     }
 
+    .help-btn {
+        position: absolute;
+        top: 4.5rem;
+        right: 1rem;
+        z-index: 10;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s;
+        text-decoration: none;
+    }
+
+    .help-btn:hover {
+        background: rgba(0, 0, 0, 0.05);
+    }
+
+    .help-btn svg {
+        width: 2.5rem;
+        height: 2.5rem;
+        color: rgba(28, 25, 23, 0.6);
+        transition: color 0.2s;
+    }
+
+    .help-btn:hover svg {
+        color: var(--color-primary);
+    }
+
     .start-message {
         text-align: center;
     }

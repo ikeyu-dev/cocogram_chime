@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COCOGRAM チャイム - 仕様書</title>
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #1c1917;
+            background: #ffffff;
+            line-height: 1.7;
+            padding: 2rem;
+            max-width: 56rem;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid #eab308;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #fef08a;
+            color: #b45309;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #92400e;
+        }
+
+        p {
+            margin-bottom: 0.75rem;
+        }
+
+        ul {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.25rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem 0.75rem;
+            text-align: left;
+        }
+
+        th {
+            background: #fef3c7;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 0.15rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.85em;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 1rem 1.25rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            color: #d97706;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <a class="back-link" href="<?= ScriptApp.getService().getUrl() ?>" target="_top">&larr; アプリに戻る</a>
+
+    <h1>COCOGRAM チャイム - 仕様書</h1>
+
+    <h2>概要</h2>
+    <p>教育現場（教室）向けの時刻表示・スケジュール管理・チャイム自動再生 Web アプリケーション。<br>
+    Google Apps Script (GAS) の HTML Service を利用した Web アプリとしてデプロイされる。</p>
+
+    <h2>動作環境</h2>
+    <ul>
+        <li>Google Apps Script (V8 ランタイム)</li>
+        <li>対応ブラウザ: Chrome、Edge、Safari、Firefox（最新版）</li>
+        <li>対応 OS: Windows、macOS</li>
+    </ul>
+
+    <h2>機能一覧</h2>
+
+    <h3>1. 時刻表示</h3>
+    <ul>
+        <li>現在時刻を HH:MM 形式でリアルタイム表示（1 秒ごと更新）</li>
+        <li>コロン（:）が 1 秒ごとに表示/非表示を切り替え（点滅効果）</li>
+        <li>画面サイズに応じてフォントサイズを動的に計算</li>
+    </ul>
+
+    <h3>2. スケジュール循環表示</h3>
+    <ul>
+        <li>1 時間を区切ったスケジュールを一覧表示</li>
+        <li>現在のタスクを先頭に配置する循環表示</li>
+        <li>現在のタスクは黄色背景・大きいフォント・太字で強調</li>
+        <li>各タスクに開始時刻と終了時刻を表示</li>
+        <li>相対位置に応じた透明度の段階的変化（中心: 1.0 → 末尾: 0.2）</li>
+        <li>相対位置に応じたスケール変化（現在: 1.05 → 次: 0.95 → それ以降: 0.9）</li>
+        <li>最後のアイテムに循環マーク表示</li>
+    </ul>
+
+    <h3>3. チャイム自動再生</h3>
+    <ul>
+        <li>指定した「分」に自動でチャイム音を再生</li>
+        <li>指定した時間帯（開始時〜終了時）に限定して再生</li>
+        <li>100ms 間隔のポーリングで再生タイミングを判定</li>
+        <li>秒数が 0 の瞬間にのみ再生（重複再生防止）</li>
+        <li>チャイム音声は Base64 エンコードして HTML 内に埋め込み（外部依存なし）</li>
+        <li>ブラウザの自動再生ポリシーに対応（ユーザー操作後に Audio を初期化）</li>
+    </ul>
+
+    <h3>4. 設定モーダル</h3>
+    <ul>
+        <li>歯車アイコンから設定画面を開く</li>
+        <li>チャイムを鳴らす分の追加・削除（タグ形式の UI）</li>
+        <li>チャイムを鳴らす時間帯の変更（セレクトボックス、0〜23 時）</li>
+        <li>初期値リセット機能</li>
+        <li>設定は localStorage に保存（端末ごとに個別管理）</li>
+    </ul>
+
+    <h3>5. 開始インタラクション</h3>
+    <ul>
+        <li>初回表示時は「画面をクリック・タップしてください」メッセージを表示</li>
+        <li>画面クリック/タップで時刻表示・チャイム再生を開始</li>
+        <li>ブラウザの音声自動再生制限を回避するために必要</li>
+    </ul>
+
+    <h3>6. レスポンシブ対応</h3>
+    <ul>
+        <li>画面サイズに応じてフォントサイズを動的に計算</li>
+        <li>時計: <code>Math.min(幅 * 0.15, 高さ * 0.12)</code></li>
+        <li>ラベル: <code>Math.min(幅 * 0.05, 高さ * 0.04)</code></li>
+        <li>ウィンドウリサイズ時に自動再計算</li>
+    </ul>
+
+    <h2>スケジュール定義</h2>
+    <table>
+        <tr><th>時間帯</th><th>タスク名</th></tr>
+        <tr><td>00〜09分</td><td>タイピング</td></tr>
+        <tr><td>10〜44分</td><td>プログラミング</td></tr>
+        <tr><td>45〜48分</td><td>かたづけ</td></tr>
+        <tr><td>49〜49分</td><td>あいさつ</td></tr>
+        <tr><td>50〜59分</td><td>授業準備</td></tr>
+    </table>
+
+    <h2>チャイム設定（初期値）</h2>
+    <table>
+        <tr><th>項目</th><th>値</th></tr>
+        <tr><td>鳴らす分</td><td>0, 10, 45, 50分</td></tr>
+        <tr><td>開始時</td><td>10時</td></tr>
+        <tr><td>終了時</td><td>16時</td></tr>
+    </table>
+
+    <h2>データ保存</h2>
+    <table>
+        <tr><th>キー</th><th>保存先</th><th>内容</th></tr>
+        <tr><td><code>cocogram-chime-settings</code></td><td>localStorage</td><td><code>{ minutes: number[], startHour: number, endHour: number }</code></td></tr>
+    </table>
+
+    <h2>ファイル構成</h2>
+    <pre><code>gas/
+├── appsscript.json      GAS マニフェスト（タイムゾーン、デプロイ設定）
+├── Code.js              サーバーサイド（doGet、include 関数）
+├── index.html           メインテンプレート（HTML 構造 + include 指示）
+├── styles.html          CSS（テーマカラー、レイアウト、モーダル）
+├── script-data.html     スケジュールデータ、ユーティリティ関数、循環表示ロジック
+├── script-settings.html 設定管理（localStorage 読み書き）
+├── script-chime.html    チャイム音声（Base64）+ 再生ロジック
+├── script-ui.html       DOM 更新、モーダル操作、メインロジック
+└── help.html            仕様書ページ</code></pre>
+
+    <h2>各ファイルの責務</h2>
+
+    <h3>appsscript.json</h3>
+    <p>GAS プロジェクトのマニフェストファイル。</p>
+    <ul>
+        <li>タイムゾーン: <code>Asia/Tokyo</code></li>
+        <li>ランタイム: V8</li>
+        <li>Web アプリ設定: デプロイユーザーとして実行、匿名アクセス可</li>
+    </ul>
+
+    <h3>Code.js</h3>
+    <p>GAS サーバーサイドスクリプト。</p>
+    <table>
+        <tr><th>関数</th><th>役割</th></tr>
+        <tr><td><code>doGet(e)</code></td><td>HTTP GET に対してページパラメータに応じた HTML を返す</td></tr>
+        <tr><td><code>include(filename)</code></td><td>指定ファイルの内容を返す（テンプレート内インクルード用）</td></tr>
+    </table>
+
+    <h3>index.html</h3>
+    <p>メインの HTML テンプレート。<code>&lt;?!= include('filename') ?&gt;</code> で他ファイルをインクルードする。</p>
+    <p>構成要素:</p>
+    <ul>
+        <li>設定ボタン（歯車 SVG アイコン）</li>
+        <li>開始前メッセージ画面</li>
+        <li>メインコンテンツ（時計 + 区切り線 + スケジュール一覧）</li>
+        <li>設定モーダル（分設定、時間帯設定、リセット、閉じる）</li>
+    </ul>
+
+    <h3>styles.html</h3>
+    <p>全スタイルを定義する CSS。</p>
+    <p>テーマカラー（CSS 変数）:</p>
+    <table>
+        <tr><th>変数名</th><th>色</th><th>用途</th></tr>
+        <tr><td><code>--color-primary</code></td><td><code>#eab308</code></td><td>黄色（メイン）</td></tr>
+        <tr><td><code>--color-secondary</code></td><td><code>#f97316</code></td><td>オレンジ</td></tr>
+        <tr><td><code>--color-accent</code></td><td><code>#84cc16</code></td><td>黄緑</td></tr>
+        <tr><td><code>--color-base-100</code></td><td><code>#ffffff</code></td><td>白</td></tr>
+        <tr><td><code>--color-base-200</code></td><td><code>#fefce8</code></td><td>黄色系背景</td></tr>
+        <tr><td><code>--color-base-300</code></td><td><code>#fef08a</code></td><td>区切り線等</td></tr>
+        <tr><td><code>--color-base-content</code></td><td><code>#1c1917</code></td><td>テキスト色</td></tr>
+    </table>
+
+    <h3>script-data.html</h3>
+    <p>データ定義とユーティリティ関数。</p>
+    <table>
+        <tr><th>変数/関数</th><th>役割</th></tr>
+        <tr><td><code>minuteSchedule</code></td><td>スケジュール配列（minute, do）</td></tr>
+        <tr><td><code>getCurrentTask(minute)</code></td><td>現在の分に対応するタスク名を返す</td></tr>
+        <tr><td><code>getTimeToNextTask(minute)</code></td><td>次のタスクまでの残り分数を返す</td></tr>
+        <tr><td><code>formatTime(h, m, showColon)</code></td><td>HH:MM / HH MM 形式でフォーマット</td></tr>
+        <tr><td><code>formatTimeDisplay(h, minStr)</code></td><td>時と分文字列から HH:MM 形式を生成</td></tr>
+        <tr><td><code>isCurrentSchedule(range, min)</code></td><td>分がスケジュール範囲内かを判定</td></tr>
+        <tr><td><code>getCircularSchedule(sch, idx)</code></td><td>現在タスクを先頭にした循環配列を生成</td></tr>
+        <tr><td><code>getOpacityByRelative(idx, total)</code></td><td>相対位置に応じた透明度（0.2〜1.0）を計算</td></tr>
+        <tr><td><code>getScaleByRelative(idx)</code></td><td>相対位置に応じたスケール値を計算</td></tr>
+    </table>
+
+    <h3>script-settings.html</h3>
+    <p>チャイム設定の管理。</p>
+    <table>
+        <tr><th>変数/関数</th><th>役割</th></tr>
+        <tr><td><code>STORAGE_KEY</code></td><td>localStorage キー名</td></tr>
+        <tr><td><code>DEFAULT_SETTINGS</code></td><td>初期設定値</td></tr>
+        <tr><td><code>settings</code></td><td>現在の設定（グローバル変数）</td></tr>
+        <tr><td><code>loadSettings()</code></td><td>localStorage から設定を読み込む</td></tr>
+        <tr><td><code>saveSettings()</code></td><td>localStorage に設定を保存する</td></tr>
+        <tr><td><code>addMinute(minute)</code></td><td>指定分を追加（0-59、重複不可、ソート）</td></tr>
+        <tr><td><code>removeMinute(minute)</code></td><td>指定分を削除</td></tr>
+        <tr><td><code>setStartHour(hour)</code></td><td>開始時を設定（0-23）</td></tr>
+        <tr><td><code>setEndHour(hour)</code></td><td>終了時を設定（0-23）</td></tr>
+        <tr><td><code>resetToDefault()</code></td><td>設定を初期値に戻す</td></tr>
+    </table>
+
+    <h3>script-chime.html</h3>
+    <p>チャイム音声の再生機能。</p>
+    <table>
+        <tr><th>変数/関数</th><th>役割</th></tr>
+        <tr><td><code>CHIME_BASE64</code></td><td>チャイム音声の Base64 エンコードデータ</td></tr>
+        <tr><td><code>audio</code></td><td>Audio オブジェクト</td></tr>
+        <tr><td><code>initAudio()</code></td><td>Audio を初期化し自動再生ポリシーに対応</td></tr>
+        <tr><td><code>checkAndPlayChime()</code></td><td>現在時刻が設定条件に一致すればチャイムを再生</td></tr>
+    </table>
+    <p>再生条件（すべて満たす場合に再生）:</p>
+    <ul>
+        <li>現在の「分」が <code>settings.minutes</code> に含まれる</li>
+        <li>現在の「時」が <code>settings.startHour</code> 以上</li>
+        <li>現在の「時」が <code>settings.endHour</code> 以下</li>
+        <li>現在の「秒」が 0</li>
+    </ul>
+
+    <h3>script-ui.html</h3>
+    <p>DOM 操作とイベントハンドラ。</p>
+    <table>
+        <tr><th>変数/関数</th><th>役割</th></tr>
+        <tr><td><code>isStarted</code></td><td>開始済みフラグ</td></tr>
+        <tr><td><code>showColon</code></td><td>コロン表示/非表示の切り替え状態</td></tr>
+        <tr><td><code>clockInterval</code></td><td>時計更新の setInterval ID</td></tr>
+        <tr><td><code>chimeInterval</code></td><td>チャイム判定の setInterval ID</td></tr>
+        <tr><td><code>updateClock()</code></td><td>時計とスケジュール表示を更新（1秒ごと）</td></tr>
+        <tr><td><code>updateSchedule(min, hour)</code></td><td>スケジュール DOM を再構築</td></tr>
+        <tr><td><code>updateFontSizes()</code></td><td>画面サイズに応じてフォントサイズを更新</td></tr>
+        <tr><td><code>renderMinuteTags()</code></td><td>設定モーダルの分タグを描画</td></tr>
+        <tr><td><code>renderHourSelects()</code></td><td>設定モーダルの時間帯セレクトを描画</td></tr>
+        <tr><td><code>handleMinuteKeyDown(event)</code></td><td>分入力の Enter キーハンドラ</td></tr>
+        <tr><td><code>handleAddMinute()</code></td><td>分追加ボタンハンドラ</td></tr>
+        <tr><td><code>handleStartHourChange(e)</code></td><td>開始時変更ハンドラ</td></tr>
+        <tr><td><code>handleEndHourChange(e)</code></td><td>終了時変更ハンドラ</td></tr>
+        <tr><td><code>handleReset()</code></td><td>リセットハンドラ</td></tr>
+        <tr><td><code>handleSettingsClick(event)</code></td><td>設定ボタンクリックハンドラ</td></tr>
+        <tr><td><code>closeModal(event)</code></td><td>モーダルを閉じる（オーバーレイクリック）</td></tr>
+        <tr><td><code>closeModalDirect()</code></td><td>モーダルを閉じる（ボタン）</td></tr>
+        <tr><td><code>handleAppClick(event)</code></td><td>画面クリックで開始</td></tr>
+        <tr><td><code>init()</code></td><td>初期化（設定読込、フォントサイズ、リサイズリスナー）</td></tr>
+    </table>
+
+    <h2>画面遷移</h2>
+    <pre><code>[初期表示]
+  「画面をクリック・タップしてください」メッセージ
+  設定ボタン（右上）
+    ↓ 画面クリック/タップ
+[メイン画面]
+  時計表示（HH:MM、コロン点滅）
+  区切り線
+  スケジュール一覧（循環表示）
+  設定ボタン（右上）
+    ↓ 設定ボタンクリック
+[設定モーダル]（オーバーレイ表示）
+  チャイムを鳴らす分（タグ表示 + 追加/削除）
+  チャイムを鳴らす時間帯（セレクトボックス）
+  初期値に戻す / 閉じるボタン</code></pre>
+
+    <h2>更新ループ</h2>
+    <pre><code>[1秒ごと] updateClock()
+  ├── コロン点滅切り替え
+  ├── 時計テキスト更新
+  └── updateSchedule()
+        └── スケジュール DOM 再構築
+
+[100msごと] checkAndPlayChime()
+  └── 条件一致時にチャイム再生
+
+[リサイズ時] updateFontSizes()
+  └── フォントサイズ再計算</code></pre>
+
+    <h2>開発・デプロイ</h2>
+
+    <h3>前提条件</h3>
+    <ul>
+        <li>Node.js / Bun</li>
+        <li>clasp（<code>@google/clasp</code>）</li>
+        <li>Biome（<code>@biomejs/biome</code>、フォーマッター）</li>
+    </ul>
+
+    <h3>コマンド</h3>
+    <table>
+        <tr><th>コマンド</th><th>説明</th></tr>
+        <tr><td><code>clasp push --force</code></td><td>ローカルのファイルを GAS にプッシュ</td></tr>
+        <tr><td><code>clasp pull</code></td><td>GAS のファイルをローカルにプル</td></tr>
+        <tr><td><code>clasp open</code></td><td>GAS エディタをブラウザで開く</td></tr>
+        <tr><td><code>bun run format</code></td><td>Biome でフォーマット実行</td></tr>
+        <tr><td><code>bun run format:check</code></td><td>Biome でフォーマットチェック</td></tr>
+    </table>
+
+    <h3>デプロイ手順</h3>
+    <ol>
+        <li><code>clasp push --force</code> でファイルをアップロード</li>
+        <li>GAS エディタで「デプロイ」→「デプロイを管理」→ 対象デプロイの「編集」→「デプロイ」</li>
+    </ol>
+</body>
+</html>

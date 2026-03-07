@@ -1,0 +1,77 @@
+<script>
+var minuteSchedule = [
+    { minute: "00-09", do: "タイピング" },
+    { minute: "10-44", do: "プログラミング" },
+    { minute: "45-48", do: "かたづけ" },
+    { minute: "49-49", do: "あいさつ" },
+    { minute: "50-59", do: "授業準備" }
+];
+
+function getCurrentTask(currentMinute) {
+    for (var i = 0; i < minuteSchedule.length; i++) {
+        var parts = minuteSchedule[i].minute.split("-").map(Number);
+        if (currentMinute >= parts[0] && currentMinute <= parts[1]) {
+            return minuteSchedule[i].do;
+        }
+    }
+    return "";
+}
+
+function getTimeToNextTask(currentMinute) {
+    var currentIndex = -1;
+    for (var i = 0; i < minuteSchedule.length; i++) {
+        var parts = minuteSchedule[i].minute.split("-").map(Number);
+        if (currentMinute >= parts[0] && currentMinute <= parts[1]) {
+            currentIndex = i;
+            break;
+        }
+    }
+    var nextIndex = currentIndex === minuteSchedule.length - 1 ? 0 : currentIndex + 1;
+    var nextStartMinute = Number(minuteSchedule[nextIndex].minute.split("-")[0]);
+    var minutesToNext = nextStartMinute - currentMinute;
+    if (minutesToNext < 0) minutesToNext += 60;
+    return minutesToNext;
+}
+
+function formatTime(hours, minutes, showColon) {
+    var h = String(hours).padStart(2, "0");
+    var m = String(minutes).padStart(2, "0");
+    return showColon ? h + ":" + m : h + " " + m;
+}
+
+function formatTimeDisplay(hour, minuteStr) {
+    var h = String(hour).padStart(2, "0");
+    var m = minuteStr.padStart(2, "0");
+    return h + ":" + m;
+}
+
+function isCurrentSchedule(minuteRange, currentMinute) {
+    var parts = minuteRange.split("-").map(Number);
+    return currentMinute >= parts[0] && currentMinute <= parts[1];
+}
+
+function getCircularSchedule(schedule, currentIndex) {
+    var len = schedule.length;
+    var result = [];
+    for (var i = 0; i < len; i++) {
+        var actualIndex = (currentIndex + i) % len;
+        result.push({
+            item: schedule[actualIndex],
+            relativeIndex: i
+        });
+    }
+    return result;
+}
+
+function getOpacityByRelative(relativeIndex, totalItems) {
+    if (relativeIndex === 0) return 1;
+    var opacityStep = 0.6 / (totalItems - 1);
+    return Math.max(0.2, 1 - relativeIndex * opacityStep);
+}
+
+function getScaleByRelative(relativeIndex) {
+    if (relativeIndex === 0) return 1.05;
+    if (relativeIndex === 1) return 0.95;
+    return 0.9;
+}
+</script>

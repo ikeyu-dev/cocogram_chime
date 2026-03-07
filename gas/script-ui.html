@@ -1,0 +1,185 @@
+<script>
+var isStarted = false;
+var showColon = true;
+var clockInterval = null;
+var chimeInterval = null;
+
+function updateClock() {
+    showColon = !showColon;
+    var now = new Date();
+    var timeStr = formatTime(now.getHours(), now.getMinutes(), showColon);
+    document.getElementById("clockTime").textContent = timeStr;
+
+    var currentMinute = now.getMinutes();
+    var currentHour = now.getHours();
+    updateSchedule(currentMinute, currentHour);
+}
+
+function updateSchedule(currentMinute, currentHour) {
+    var currentIndex = -1;
+    for (var i = 0; i < minuteSchedule.length; i++) {
+        if (isCurrentSchedule(minuteSchedule[i].minute, currentMinute)) {
+            currentIndex = i;
+            break;
+        }
+    }
+
+    var circularSchedule = getCircularSchedule(minuteSchedule, currentIndex);
+    var listEl = document.getElementById("scheduleList");
+    listEl.innerHTML = "";
+
+    for (var j = 0; j < circularSchedule.length; j++) {
+        var entry = circularSchedule[j];
+        var item = entry.item;
+        var relIdx = entry.relativeIndex;
+        var isCurrent = relIdx === 0;
+        var opacity = getOpacityByRelative(relIdx, minuteSchedule.length);
+        var scale = getScaleByRelative(relIdx);
+
+        var div = document.createElement("div");
+        div.className = "schedule-item " + (isCurrent ? "current" : "other");
+        div.style.opacity = opacity;
+        div.style.transform = "scale(" + scale + ")";
+
+        var bar = document.createElement("div");
+        bar.className = "accent-bar";
+        div.appendChild(bar);
+
+        var timeEl = document.createElement("div");
+        timeEl.className = "schedule-time";
+        timeEl.textContent = formatTimeDisplay(currentHour, item.minute.split("-")[0]);
+        div.appendChild(timeEl);
+
+        var taskEl = document.createElement("div");
+        taskEl.className = "schedule-task";
+        taskEl.textContent = item.do;
+        div.appendChild(taskEl);
+
+        var endEl = document.createElement("div");
+        endEl.className = "schedule-end";
+        endEl.textContent = "~ " + formatTimeDisplay(currentHour, item.minute.split("-")[1]);
+        div.appendChild(endEl);
+
+        if (relIdx === minuteSchedule.length - 1) {
+            var loopEl = document.createElement("div");
+            loopEl.className = "loop-indicator";
+            loopEl.textContent = "\u21BB";
+            div.appendChild(loopEl);
+        }
+
+        listEl.appendChild(div);
+    }
+}
+
+function updateFontSizes() {
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+
+    var clockFontSize = Math.min(w * 0.15, h * 0.12);
+    var labelFontSize = Math.min(w * 0.05, h * 0.04);
+
+    document.getElementById("clockTime").style.fontSize = clockFontSize + "px";
+    document.getElementById("scheduleTitle").style.fontSize = (labelFontSize * 1.2) + "px";
+}
+
+function renderMinuteTags() {
+    var container = document.getElementById("minuteTags");
+    container.innerHTML = "";
+    settings.minutes.forEach(function(minute) {
+        var btn = document.createElement("button");
+        btn.className = "minute-tag";
+        btn.innerHTML = minute + "分 <span class='remove'>&times;</span>";
+        btn.onclick = function() { removeMinute(minute); };
+        container.appendChild(btn);
+    });
+}
+
+function renderHourSelects() {
+    var startSelect = document.getElementById("startHourSelect");
+    var endSelect = document.getElementById("endHourSelect");
+    startSelect.innerHTML = "";
+    endSelect.innerHTML = "";
+
+    for (var i = 0; i < 24; i++) {
+        var opt1 = document.createElement("option");
+        opt1.value = i;
+        opt1.textContent = i + "時";
+        if (i === settings.startHour) opt1.selected = true;
+        startSelect.appendChild(opt1);
+
+        var opt2 = document.createElement("option");
+        opt2.value = i;
+        opt2.textContent = i + "時";
+        if (i === settings.endHour) opt2.selected = true;
+        endSelect.appendChild(opt2);
+    }
+}
+
+function handleMinuteKeyDown(event) {
+    if (event.key === "Enter") {
+        handleAddMinute();
+    }
+}
+
+function handleAddMinute() {
+    var input = document.getElementById("minuteInput");
+    var minute = parseInt(input.value, 10);
+    if (!isNaN(minute) && minute >= 0 && minute <= 59) {
+        addMinute(minute);
+        input.value = "";
+    }
+}
+
+function handleStartHourChange(event) {
+    setStartHour(parseInt(event.target.value, 10));
+}
+
+function handleEndHourChange(event) {
+    setEndHour(parseInt(event.target.value, 10));
+}
+
+function handleReset() {
+    resetToDefault();
+}
+
+function handleSettingsClick(event) {
+    event.stopPropagation();
+    renderMinuteTags();
+    renderHourSelects();
+    document.getElementById("modalOverlay").classList.add("active");
+}
+
+function closeModal(event) {
+    if (event.target === document.getElementById("modalOverlay")) {
+        document.getElementById("modalOverlay").classList.remove("active");
+    }
+}
+
+function closeModalDirect() {
+    document.getElementById("modalOverlay").classList.remove("active");
+}
+
+function handleAppClick(event) {
+    if (isStarted) return;
+    isStarted = true;
+
+    document.getElementById("startMessage").style.display = "none";
+    document.getElementById("mainContent").classList.add("active");
+
+    initAudio();
+
+    updateClock();
+    updateFontSizes();
+
+    clockInterval = setInterval(updateClock, 1000);
+    chimeInterval = setInterval(checkAndPlayChime, 100);
+}
+
+function init() {
+    loadSettings();
+    updateFontSizes();
+    window.addEventListener("resize", updateFontSizes);
+}
+
+init();
+</script>

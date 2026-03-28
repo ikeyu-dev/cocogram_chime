@@ -1,4 +1,4 @@
-# COCOGRAM チャイム - GAS 仕様書
+# 授業チャイム - GAS 仕様書
 
 ## 概要
 
@@ -81,7 +81,7 @@ Google Apps Script (GAS) の HTML Service を利用した Web アプリとして
 
 | キー                      | 保存先        | 内容                                           |
 | ------------------------- | ------------- | ---------------------------------------------- |
-| `cocogram-chime-settings` | localStorage  | `{ minutes: number[], startHour: number, endHour: number }` |
+| `chime-settings` | localStorage  | `{ minutes: number[], startHour: number, endHour: number }` |
 
 ## ファイル構成
 

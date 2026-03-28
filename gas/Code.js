@@ -3,7 +3,7 @@ function doGet(e) {
     var template = HtmlService.createTemplateFromFile(page);
     return template
         .evaluate()
-        .setTitle("COCOGRAM チャイム")
+        .setTitle("授業チャイム")
         .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 

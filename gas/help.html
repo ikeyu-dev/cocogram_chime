@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COCOGRAM チャイム - 仕様書</title>
+    <title>授業チャイム - 仕様書</title>
     <style>
         *, *::before, *::after {
             margin: 0;
@@ -120,7 +120,7 @@
 <body>
     <a class="back-link" href="<?= ScriptApp.getService().getUrl() ?>" target="_top">&larr; アプリに戻る</a>
 
-    <h1>COCOGRAM チャイム - 仕様書</h1>
+    <h1>授業チャイム - 仕様書</h1>
 
     <h2>概要</h2>
     <p>教育現場（教室）向けの時刻表示・スケジュール管理・チャイム自動再生 Web アプリケーション。<br>
@@ -208,7 +208,7 @@
     <h2>データ保存</h2>
     <table>
         <tr><th>キー</th><th>保存先</th><th>内容</th></tr>
-        <tr><td><code>cocogram-chime-settings</code></td><td>localStorage</td><td><code>{ minutes: number[], startHour: number, endHour: number }</code></td></tr>
+        <tr><td><code>chime-settings</code></td><td>localStorage</td><td><code>{ minutes: number[], startHour: number, endHour: number }</code></td></tr>
     </table>
 
     <h2>ファイル構成</h2>
